@@ -1,30 +1,26 @@
-FROM arm32v7/openjdk:8-jre
-HEALTHCHECK CMD curl --fail http://127.0.0.1:8088 || exit 1
+FROM arm32v7/openjdk:8u181-jre-slim
+HEALTHCHECK CMD wget --quiet --tries=1 --no-check-certificate http://127.0.0.1:8088 || exit 1
 
-ARG OMADA_FILENAME=Omada_Controller_v3.0.5_linux_x64
+ARG OMADA_FILENAME=Omada_Controller_v3.2.1_linux_x64
 ARG MONGO_ARM_FILENAME=core_mongodb_3_0_14
 
 COPY bin/qemu-arm-static /usr/bin
 
+WORKDIR /tmp
+
 RUN apt-get update && \
   apt-get install -y --no-install-recommends \
-    curl
-
-RUN echo "deb http://archive.raspbian.org/raspbian jessie main contrib non-free" | tee "/etc/apt/sources.list.d/raspbian-jessie.list" && \
-  wget -O- https://archive.raspbian.org/raspbian.public.key | apt-key add - && \
-#  apt-key adv --keyserver --no-tty hkp://keyserver.ubuntu.com:80 --recv 9165938D90FDDD2E && \
-  apt-get update && \
-  apt-get install -y --no-install-recommends \
-    libssl1.0.0 && \
+    wget && \
   rm -rf /var/lib/apt/lists/*
 
-WORKDIR /tmp
-RUN wget https://static.tp-link.com/2018/201811/20181108/$OMADA_FILENAME.tar.gz.zip && \
-  unzip $OMADA_FILENAME.tar.gz.zip
+RUN wget -q http://security.debian.org/debian-security/pool/updates/main/o/openssl/libssl1.0.0_1.0.1t-1+deb8u11_armhf.deb && \
+  dpkg -i libssl1.0.0_1.0.1t-1+deb8u11_armhf.deb
 
-RUN tar -xvf $OMADA_FILENAME.tar.gz
+RUN wget -q https://static.tp-link.com/2019/201907/20190726/$OMADA_FILENAME.tar.gz
 
-RUN wget https://andyfelong.com/downloads/$MONGO_ARM_FILENAME.tar.gz && \
+RUN tar -xvf $OMADA_FILENAME.tar.gz --strip 1
+
+RUN wget -q https://andyfelong.com/downloads/$MONGO_ARM_FILENAME.tar.gz && \
   tar -xvf $MONGO_ARM_FILENAME.tar.gz && \
   cp mongod /tmp/$OMADA_FILENAME/bin/
 
