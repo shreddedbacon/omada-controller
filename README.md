@@ -1,6 +1,6 @@
 # Raspberry Pi TP-Link Omada Controller
-[![Docker Pulls](https://img.shields.io/docker/pulls/frnby/omada-eap-controller.svg)](https://hub.docker.com/r/shreddedbacon/omada-controller)
-[![Last Commit](https://img.shields.io/github/last-commit/frbncis/docker-arm32v7-omada.svg)](https://github.com/shreddedbacon/omada-controller)
+[![Docker Pulls](https://img.shields.io/docker/pulls/shreddedbacon/omada-controller.svg)](https://hub.docker.com/r/shreddedbacon/omada-controller)
+[![Last Commit](https://img.shields.io/github/last-commit/shreddedbacon/omada-controller.svg)](https://github.com/shreddedbacon/omada-controller)
 
 This repo contains the Dockerfile for running the TP Link Omada Controller as a container on an Raspberry Pi 3
 
